@@ -50,7 +50,7 @@ class RegisterController extends Controller
         try{
             $this->validator($request->all())->validate();
         } catch (\Exception $e) {
-            dd('Что-то пошло не так!');
+            return back()->with('error', $e->getMessage());
         }
 
         $email = $request->input('email');
