@@ -15,6 +15,10 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
+        if(\Auth::user()->isAdmin == 0) {
+            return redirect(route('account'));
+        }
+
         return $next($request);
     }
 }
