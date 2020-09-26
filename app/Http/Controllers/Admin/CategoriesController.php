@@ -11,7 +11,10 @@ class CategoriesController extends Controller
 {
     public function index()
     {
-        return view('admin.categories.index');
+        $objCategory = new Category();
+        $categories = $objCategory->get();
+
+        return view('admin.categories.index', ['categories' => $categories]);
     }
 
     public function addCategory()
@@ -24,7 +27,7 @@ class CategoriesController extends Controller
         try{
             $this->validate($request, [
                 'title' => 'required|string|min:3|max:30',
-                'description' => 'string|min:3|max:250'
+                'description' => 'required|string|min:3|max:250'
             ]);
             $objCategory = new Category();
             $objCategory = $objCategory->create([
@@ -32,7 +35,7 @@ class CategoriesController extends Controller
                 'description' => $request->input('description')
             ]);
             if($objCategory) {
-                return back()->with('success', 'Категория успешно добавлена!');
+                return redirect()->route('categories')->with('success', 'Категория успешно добавлена!');
             }
             return back()->with('error', 'Не удалось добавить категорию!');
 
@@ -40,18 +43,52 @@ class CategoriesController extends Controller
             \Log::error($e->getMessage());
             return back()->with('error', 'Не удалось добавить категорию: '.$e->getMessage());
         }
-
     }
 
     public function editCategory(int $id)
     {
+        $category = Category::find($id);
+        if(!$category) {
+            return abort(404);
+        }
+        return view('admin.categories.edit', ['category' => $category]);
+    }
 
+    public function editRequestCategory(Request $request, int $id)
+    {
+        try{
+            $this->validate($request, [
+                'title' => 'required|string|min:3|max:30',
+                'description' => 'required|string|min:3|max:250'
+            ]);
+            $objCategory = Category::find($id);
+
+            if(!$objCategory) {
+                return abort(404);
+            }
+            $objCategory->title = $request->input('title');
+            $objCategory->description = $request->input('description');
+
+            if($objCategory->save()) {
+                return redirect()->route('categories')->with('success', 'Категория успешно изменена!');
+            }
+            return back()->with('error', 'Не удалось изменить категорию!');
+
+        } catch (ValidationException $e) {
+            \Log::error($e->getMessage());
+            return back()->with('error', 'Не удалось изменить категорию: '.$e->getMessage());
+        }
     }
 
     public function deleteCategory(Request $request)
     {
         if($request->ajax()) {
+            $id = (int)$request->input('id');
+            $objCategory = new Category();
 
+            $objCategory->where('id', $id)->delete();
+
+            echo 'success';
         }
     }
 }
