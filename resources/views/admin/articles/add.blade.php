@@ -1,8 +1,5 @@
 @extends('layouts.admin')
 @section('content')
-    <?php
-
-    ?>
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
         <h1 class="h2">Добавить статью</h1>
         <br>
