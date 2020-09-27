@@ -12,4 +12,13 @@ class ArticlesController extends Controller
 
         return view('index', ['articles' => $articles]);
     }
+
+    public function showArticle(int $id, $slug)
+    {
+        $objArticle = Article::find($id);
+        if(!$objArticle) {
+            return abort(404);
+        }
+        return view('show_article', ['article' => $objArticle]);
+    }
 }
