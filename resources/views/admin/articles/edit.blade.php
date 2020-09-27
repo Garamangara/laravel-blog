@@ -8,7 +8,10 @@
             <p>Выбор категорий:</p><br>
             <select name="categories[]" class="form-control" multiple>
                 @foreach($categories as $category)
-                    <option value="{{$category->id}}">{{$category->title}}</option>
+                    <option value="{{$category->id}}"
+                            @if(in_array($category->id, $arrCategories)) selected @endif>
+                        {{$category->title}}
+                    </option>
                 @endforeach
             </select></p>
             <p>Введите название статьи:<br><input value="{{$article->title}}" type="text" name="title" class="form-control" required> </p>
