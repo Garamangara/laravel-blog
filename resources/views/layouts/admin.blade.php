@@ -102,7 +102,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{!! route('users') !!}">
                             <span data-feather="users"></span>
                             Пользователи
                         </a>
