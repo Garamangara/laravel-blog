@@ -40,8 +40,9 @@
                         url: "{!! route('articles.delete') !!}",
                         data: {_token:"{{csrf_token()}}", id:id},
                         complete: function () {
-                            alert('Категория удалена!');
-                            location.reload();
+                            console.log(id);
+                            alert('Статья удалена!');
+                            // location.reload();
                         }
                     });
                 } else {

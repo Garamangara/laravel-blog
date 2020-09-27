@@ -51,16 +51,52 @@ class ArticlesController extends Controller
             return redirect()->route('articles')->with('success', 'Статья успешно добавлена');
         }
         return back()->with('error', 'Не удалось добавить статью');
-
     }
 
     public function editArticle(int $id)
     {
+        $objCategory = new Category();
+        $categories = $objCategory->get();
 
+        $objArticle = Article::find($id);
+        if(!$objArticle) {
+            return abort(404);
+        }
+
+        return view('admin.articles.edit', [
+            'categories' => $categories,
+            'article' => $objArticle
+        ]);
+    }
+
+    public function editRequestArticle(ArticleRequest $request, $id)
+    {
+        $objArticle = Article::find($id);
+        if(!$objArticle) {
+            return abort(404);
+        }
+        $objArticle->title = $request->input('title');
+        $objArticle->author = $request->input('author');
+        $objArticle->short_text = $request->input('short_text');
+        $objArticle->full_text = $request->input('full_text');
+
+        if($objArticle->save()) {
+            return redirect()->route('articles')->with('success', 'Статья успешно отредактирована!');
+        }
+        return back()->with('error', 'Не удалось изменить статью');
     }
 
     public function deleteArticle(Request $request)
     {
+        if($request->ajax()) {
+            $id = (int)$request->input('id');
+            $objArticle = new Article();
 
+            $objArticle->where('id', $id)->delete();
+
+            dd($objArticle);
+
+            echo 'success';
+        }
     }
 }
