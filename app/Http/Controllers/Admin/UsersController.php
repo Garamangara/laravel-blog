@@ -12,7 +12,6 @@ class UsersController extends Controller
         $params = [
             'users' => $users,
         ];
-
         return view('admin.users.index', $params);
     }
 }

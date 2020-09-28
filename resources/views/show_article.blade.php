@@ -29,27 +29,51 @@
             </div>
         </div>
 
+        <div class="container">
+            <br><br>
+            <hr>
+            <br>
+            @if(\Auth::check())
+                <form method="post" action="{!! route('comments.add') !!}">
+                    {!! csrf_field() !!}
+                    <input type="hidden" value="{{$article->id}}" name="article_id">
+                    <p>Комментарий:<br>
+                        <textarea class="form-control" name="comment"></textarea></p>
+                    <br>
+                    <button type="submit" class="btn btn-success" style="cursor:pointer;">Добавить комментарий</button>
+                </form>
+            @else
+                <form>
+                    <p><h2>Чтобы добавить комментарий - авторизируйтесь</h2><br>
+                    <textarea class="form-control"></textarea></p>
+                    <br>
+                    <button class="btn btn-success" style="cursor:pointer;">Комментарий</button>
+                </form>
+            @endif
+            <br><br>
+            <hr>
+            <br>
 {{--        <div class="col-md-8 col-md-offset-2">--}}
-{{--            @foreach($comments as $comment)--}}
-{{--                <div class="comment" style="border:1px solid #004085;">--}}
-{{--                    <p>{{_user($comment->user_id)->email}}</p>--}}
-{{--                    <p>{{$comment->created_at->format('d-m-Y')}}</p>--}}
-{{--                    <p>{!! $comment->comment !!}</p>--}}
-{{--                </div>--}}
-{{--            @endforeach--}}
-{{--            <br><br>--}}
-{{--            <hr>--}}
-{{--            <br>--}}
-{{--            @if(\Auth::check())--}}
-{{--                <form method="post" action="{!! route('comments.add') !!}">--}}
-{{--                    {!! csrf_field() !!}--}}
-{{--                    <input type="hidden" value="{{$article->id}}" name="article_id">--}}
-{{--                    <p>Комментарий:<br>--}}
-{{--                        <textarea class="form-control" name="comment"></textarea></p>--}}
-{{--                    <br>--}}
-{{--                    <button type="submit" class="btn btn-success" style="cursor:pointer;">Добавить комментарий</button>--}}
-{{--                </form>--}}
-{{--            @endif--}}
-{{--        </div>--}}
+            <?php
+                function gettingUser($user_id)
+                {
+                    $objUser = \App\Entities\User::find($user_id);
+                    if(!$objUser) {
+                        return abort(404);
+                    }
+                    return $objUser;
+                }
+            ?>
+            @foreach($comments as $comment)
+                <div class="comment" style="border:1px solid #004085;">
+                    <p>{{gettingUser($comment->user_id)->email}}</p>
+                    <p>{{$comment->created_at->format('d-m-Y')}}</p>
+                    <p>{!! $comment->comment !!}</p>
+                </div>
+            @endforeach
+            <br><br>
+            <hr>
+            <br>
+        </div>
     </article>
 @stop
