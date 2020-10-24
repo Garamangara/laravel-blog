@@ -17,7 +17,7 @@
             <p>Введите название статьи:<br><input value="{{$article->title}}" type="text" name="title" class="form-control" required> </p>
             <p>Автор статьи:<br><input value="{{$article->author}}" type="text" name="author" class="form-control" required> </p>
             <p>Краткое описание:<br><textarea name="short_text" class="form-control">{!! $article->short_text !!}</textarea> </p>
-            <p>Полный текст:<br><textarea name="full_text" class="form-control">{!! $article->full_text !!}</textarea> </p>
+            <p>Полный текст:<br><textarea name="full_text" class="form-control  full-text">{!! $article->full_text !!}</textarea> </p>
             <button type="submit" class="btn btn-success" style="cursor: pointer">Редактировать</button>
         </form>
     </main>
